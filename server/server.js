@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const issueRoutes = require("./routes/issues.js");
 require("dotenv").config();
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,12 +18,6 @@ app.use(express.json());
 // allow our api to receive data from a client app
 app.use(express.urlencoded({ extended: true }));
 
-// register routes for our api endpoints
-
-//http://localhost:5000/api/issues - GET, POST
-//http://localhost:5000/api/issues/:id - PATCH, GET, DELETE
-//http://localhost:5000/api/issues/user - GET
-
 api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
 
 const CONNECTION_URL = `mongodb+srv://${api_key}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -33,6 +28,9 @@ mongoose
     app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
   )
   .catch((error) => console.log(error.message));
+
+// Pick up React index.html file
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.get("/api/hello", (req, res) => {
   res.send({ express: "Hello From Express" });
