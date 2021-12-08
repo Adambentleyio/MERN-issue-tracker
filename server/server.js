@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const issueRoutes = require("./routes/issues.js");
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,7 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 //http://localhost:5000/api/issues/:id - PATCH, GET, DELETE
 //http://localhost:5000/api/issues/user - GET
 
-const CONNECTION_URL = `mongodb+srv://mernstack123:mernstack123@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
+
+const CONNECTION_URL = `mongodb+srv://${api_key}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
