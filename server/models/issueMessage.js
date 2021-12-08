@@ -4,6 +4,7 @@ const issueSchema = mongoose.Schema({
   title: String,
   description: String,
   userId: String,
+  status: String,
   tags: [String],
   selectedFile: String,
   likeCount: {

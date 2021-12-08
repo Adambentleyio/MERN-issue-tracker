@@ -1,3 +1,4 @@
+import { clamp } from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signIn, signOut } from "../actions";
@@ -52,14 +53,27 @@ class GoogleAuth extends Component {
       return null;
     } else if (this.props.isSignedIn) {
       return (
-        <button className="ui grey google button" onClick={this.onSignOutClick}>
+        <button
+          style={{
+            display: "inline",
+            margin: "0",
+            height: "clamp(2.5rem, 2.5vw, 6rem)",
+          }}
+          className="ui google button"
+          style={{ backgroundColor: "#F2F4F7" }}
+          onClick={this.onSignOutClick}
+        >
           <i className="google icon" />
           Sign Out
         </button>
       );
     } else {
       return (
-        <button className="ui teal google button" onClick={this.onSignInClick}>
+        <button
+          className="ui google button"
+          style={{ backgroundColor: "#F2F4F7", borderRadius: "20px" }}
+          onClick={this.onSignInClick}
+        >
           <i className="google icon" />
           Sign In with Google
         </button>
@@ -67,8 +81,46 @@ class GoogleAuth extends Component {
     }
   }
 
+  renderProfile() {
+    // if auth state has sign in as TRUE, then get the profile img url and return it in img tag.
+    // Check if statements for signIn with null, true, false
+
+    if (this.props.isSignedIn === null) {
+      return null;
+    } else if (this.props.isSignedIn) {
+      const profile = this.auth.currentUser.get().getBasicProfile();
+
+      return (
+        <div style={{ display: "flex" }}>
+          <img
+            style={{
+              width: "100%",
+              height: "clamp(2.5rem, 2.5vw, 6rem)",
+              borderRadius: "50px",
+            }}
+            src={profile.getImageUrl()}
+            alt=""
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
-    return <div>{this.renderAuthButton()}</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ margin: "1rem" }}>{this.renderProfile()}</div>
+        <div>{this.renderAuthButton()}</div>
+      </div>
+    );
   }
 }
 

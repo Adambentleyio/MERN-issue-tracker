@@ -3,6 +3,85 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
 import { bindActionCreators } from "redux";
+import styled from "styled-components";
+
+const Card = styled.div`
+  position: relative;
+  min-height: 220px;
+  max-width: 275px;
+  background-color: #f2f4f7;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  transition: 0.8s;
+  &:hover {
+    transform: translateX(-20px);
+  }
+
+  .title a {
+    display: block;
+    width: 80%;
+    padding-left: 1rem;
+    color: #022a52;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-family: montserrat;
+    font-weight: 500;
+  }
+`;
+
+const CardContent = styled.div`
+  position: absolute;
+  overflow: hidden;
+  padding-bottom: 2rem;
+  bottom: 0;
+  height: 55%;
+  width: 100%;
+  background-color: #022a52;
+
+  .description {
+    /* margin-top: 1rem; */
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    font-family: montserrat;
+    padding: 1rem;
+    color: #e6eef6;
+    font-size: 0.8rem;
+  }
+  .admin-panel {
+    position: absolute;
+    bottom: 0;
+    margin: 0.5rem 0;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+  }
+  btn,
+  a {
+    color: #e6eef6;
+    text-decoration: none;
+    font-family: montserrat;
+    font-size: 0.8rem;
+    padding: 0.25rem 1rem;
+    margin: 0 1rem;
+    border-radius: 20px;
+  }
+  .btn-delete {
+    border: 2px solid #e6eef6;
+    transition: 0.4s;
+  }
+  .btn-edit {
+    background: linear-gradient(268.23deg, #3575b6 4.85%, #022a52 96.46%);
+    width: 11rem;
+    transition: 0.4s;
+  }
+  .btn-edit:hover,
+  .btn-delete:hover {
+    color: #3575b6;
+  }
+`;
 
 class IssueList extends React.Component {
   componentDidMount() {
@@ -12,18 +91,12 @@ class IssueList extends React.Component {
   renderAdmin(issue) {
     if (issue.userId === this.props.currentUserId) {
       return (
-        <div className="right floated content">
-          <Link
-            to={`/issue/edit/${issue._id}`}
-            className="ui button grey small"
-          >
-            EDIT
+        <div className="admin-panel">
+          <Link className="btn btn-edit" to={`/issue/edit/${issue._id}`}>
+            Edit
           </Link>
 
-          <Link
-            to={`issue/delete/${issue._id}`}
-            className="ui button teal small"
-          >
+          <Link className="btn btn-delete" to={`issue/delete/${issue._id}`}>
             Delete
           </Link>
         </div>
@@ -33,17 +106,29 @@ class IssueList extends React.Component {
 
   renderList() {
     return this.props.issues.map((issue) => {
+      const d = new Date(issue.createdAt);
+      const showDate = d.toDateString();
       return (
-        <div className="item" key={issue.createdAt}>
-          {this.renderAdmin(issue)}
-          <i className="large icon user outline" />
-          <div className="ui content">
-            <Link to={`/issue/${issue._id}`} className="ui header black small">
-              {issue.title}
-            </Link>
-            <div className="description">{issue.description}</div>
+        // Each individual card layout
+        <Card key={issue.createdAt}>
+          <div
+            style={{
+              fontSize: "10px",
+              padding: "0.25rem 1rem",
+              fontFamily: "montserrat",
+              fontWeight: "200",
+            }}
+          >
+            {showDate}
           </div>
-        </div>
+          <div className="title">
+            <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
+          </div>
+          <CardContent>
+            <div className="description">{issue.description}</div>
+            {this.renderAdmin(issue)}
+          </CardContent>
+        </Card>
       );
     });
   }
@@ -52,7 +137,11 @@ class IssueList extends React.Component {
     if (this.props.isSignedIn) {
       return (
         <div style={{ textAlign: "right" }}>
-          <Link to="/issue/new" className="ui button grey">
+          <Link
+            to="/issue/new"
+            className="ui button"
+            style={{ backgroundColor: "#e6eef6", color: "#022a52" }}
+          >
             Create a new issue
           </Link>
         </div>

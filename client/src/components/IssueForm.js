@@ -28,7 +28,23 @@ class IssueForm extends React.Component {
     );
   };
 
+  renderDropdown = ({ input, label, meta }) => {
+    const className = `field ${meta.error && meta.touched ? "error" : ""}`;
+    return (
+      <div className={className}>
+        <label>Select Status</label>
+        <Field name={label} component="select">
+          <option />
+          <option value="urgent">Urgent</option>
+          <option value="active">Active</option>
+          <option value="backburn">Backburn</option>
+        </Field>
+      </div>
+    );
+  };
+
   onSubmit = (formValues) => {
+    console.log(formValues);
     this.props.onSubmit(formValues);
   };
 
@@ -44,7 +60,13 @@ class IssueForm extends React.Component {
           component={this.renderInput}
           label="Enter Description"
         />
-        <button className="ui button grey">Submit</button>
+        <Field name="status" component={this.renderDropdown} label="status" />
+        <button
+          className="ui button"
+          style={{ backgroundColor: "#022a52", color: "#e6eef6" }}
+        >
+          Submit
+        </button>
       </form>
     );
   }
