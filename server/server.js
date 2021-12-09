@@ -30,7 +30,14 @@ mongoose
   .catch((error) => console.log(error.message));
 
 // Pick up React index.html file
-app.use(express.static(path.join(__dirname, "../client/build")));
+if (process.env.NODE_ENV === "production") {
+  // set static folder
+  app.use(express.static(path.join(__dirname, "../client/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 app.get("/api/hello", (req, res) => {
   res.send({ express: "Hello From Express" });
