@@ -39,28 +39,28 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.get("/api/hello", (req, res) => {
-  res.send({ express: "Hello From Express" });
-});
-
-app.post("/api/data", (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`
-  );
-});
-
 app.use("/issues", issueRoutes);
 
 // testing the fetchIssues reducer
 
-app.get("/api/issues", (req, res) => {
-  res.send([
-    {
-      title: "my express issue",
-      description: "my express description",
-    },
-  ]);
-});
+// app.get("/api/hello", (req, res) => {
+//   res.send({ express: "Hello From Express" });
+// });
+
+// app.post("/api/data", (req, res) => {
+//   console.log(req.body);
+//   res.send(
+//     `I received your POST request. This is what you sent me: ${req.body.post}`
+//   );
+// });
+
+// app.get("/api/issues", (req, res) => {
+//   res.send([
+//     {
+//       title: "my express issue",
+//       description: "my express description",
+//     },
+//   ]);
+// });
 
 // app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
