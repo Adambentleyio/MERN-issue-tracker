@@ -3,7 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const issueRoutes = require("./routes/issues.js");
-// require("dotenv").config();
+require("dotenv").config();
 const path = require("path");
 
 const app = express();
@@ -18,9 +18,9 @@ app.use(express.json());
 // allow our api to receive data from a client app
 app.use(express.urlencoded({ extended: true }));
 
-api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
+// api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
 
-const CONNECTION_URL = `mongodb+srv://${api_key}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
