@@ -32,6 +32,7 @@ mongoose
 // Pick up React index.html file
 if (process.env.NODE_ENV === "production") {
   // set static folder
+  console.log("running in production mode");
   app.use(express.static(path.join(__dirname, "../client/build")));
 
   app.get("*", (req, res) => {
