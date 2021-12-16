@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
 
 const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+console.log(CONNECTION_URL);
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
