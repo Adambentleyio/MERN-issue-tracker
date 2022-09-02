@@ -4,6 +4,7 @@ export default (state = {}, action) => {
   switch (action.type) {
     case "FETCH_ISSUES":
       return { ...state, ..._.mapKeys(action.payload, "_id") };
+
     case "FETCH_ISSUE":
       return {
         ...state,

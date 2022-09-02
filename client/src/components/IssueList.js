@@ -36,7 +36,7 @@ const CardContent = styled.div`
   bottom: 0;
   height: 55%;
   width: 100%;
-  background-color: #022a52;
+  background-color: #b2b4b7;
 
   .description {
     /* margin-top: 1rem; */
@@ -45,7 +45,7 @@ const CardContent = styled.div`
     justify-content: center;
     font-family: montserrat;
     padding: 1rem;
-    color: #e6eef6;
+    color: #88888;
     font-size: 0.8rem;
   }
   .admin-panel {
@@ -101,7 +101,18 @@ class IssueList extends React.Component {
           </Link>
         </div>
       );
-    }
+    } else
+      return (
+        <div className="admin-panel">
+          <Link className="btn btn-edit" to={`/issue/edit/${issue._id}`}>
+            Edit
+          </Link>
+
+          <Link className="btn btn-delete" to={`issue/delete/${issue._id}`}>
+            Delete
+          </Link>
+        </div>
+      );
   }
 
   renderList() {
@@ -110,7 +121,7 @@ class IssueList extends React.Component {
       const showDate = d.toDateString();
       return (
         // Each individual card layout
-        <Card key={issue.createdAt}>
+        <div key={issue.createdAt}>
           <div
             style={{
               fontSize: "10px",
@@ -124,11 +135,11 @@ class IssueList extends React.Component {
           <div className="title">
             <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
           </div>
-          <CardContent>
+          <div>
             <div className="description">{issue.description}</div>
             {this.renderAdmin(issue)}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       );
     });
   }

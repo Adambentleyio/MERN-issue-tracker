@@ -38,7 +38,7 @@ export const createIssue = (formValues) => {
 export const fetchIssues = () => async (dispatch) => {
   try {
     const response = await axios.get("/issues");
-    console.log(response.data);
+    // console.log(response.data);
 
     dispatch({ type: "FETCH_ISSUES", payload: response.data });
   } catch (error) {
