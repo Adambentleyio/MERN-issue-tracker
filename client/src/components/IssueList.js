@@ -7,86 +7,80 @@ import styled from "styled-components";
 
 const Card = styled.div`
   position: relative;
-  min-height: 220px;
-  max-width: 275px;
-  background-color: #f2f4f7;
-  border-radius: 12px;
-  margin: 1.5rem 0;
+  width: 375px;
+  margin: 2rem;
+  padding: 1.2rem 1rem;
   transition: 0.8s;
-  &:hover {
-    transform: translateX(-20px);
-  }
 
   .title a {
     display: block;
+    margin-bottom: 0.7rem;
     width: 80%;
-    padding-left: 1rem;
-    color: #022a52;
+    color: #333;
     text-decoration: none;
-    font-size: 1.2rem;
-    font-family: montserrat;
-    font-weight: 500;
+    font-size: 1.6rem;
+    font-family: Roboto;
+    font-weight: 800;
   }
 `;
 
 const CardContent = styled.div`
-  position: absolute;
+  /* position: absolute; */
+  font-family: inter;
   overflow: hidden;
-  padding-bottom: 2rem;
-  bottom: 0;
+  margin-top: 0.8rem;
   height: 55%;
   width: 100%;
-  background-color: #b2b4b7;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid #d1d1d1;
 
   .description {
     /* margin-top: 1rem; */
     display: flex;
     /* align-items: center; */
-    justify-content: center;
-    font-family: montserrat;
-    padding: 1rem;
-    color: #88888;
-    font-size: 0.8rem;
+    /* justify-content: center; */
   }
   .admin-panel {
-    position: absolute;
-    bottom: 0;
-    margin: 0.5rem 0;
+    margin: auto 0 0 0;
     width: 100%;
     display: flex;
-    text-align: center;
-    align-items: center;
     justify-content: space-between;
   }
   btn,
   a {
     color: #e6eef6;
     text-decoration: none;
-    font-family: montserrat;
-    font-size: 0.8rem;
-    padding: 0.25rem 1rem;
     margin: 0 1rem;
     border-radius: 20px;
   }
   .btn-delete {
-    border: 2px solid #e6eef6;
-    transition: 0.4s;
+    color: #313131;
+    transition: 0.2s;
+    margin-top: 1rem;
   }
   .btn-edit {
-    background: linear-gradient(268.23deg, #3575b6 4.85%, #022a52 96.46%);
-    width: 11rem;
-    transition: 0.4s;
+    color: #313131;
+    width: 3rem;
+    margin: 1rem 0 0 auto;
+    transition: 0.2s;
   }
   .btn-edit:hover,
   .btn-delete:hover {
-    color: #3575b6;
+    color: orange;
   }
 `;
 
 class IssueList extends React.Component {
   componentDidMount() {
+    console.log(this.props.issues);
     this.props.fetchIssues();
   }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.issues !== this.props.issues) {
+  //     this.props.fetchIssues();
+  //   }
+  // }
 
   renderAdmin(issue) {
     if (issue.userId === this.props.currentUserId) {
@@ -121,25 +115,19 @@ class IssueList extends React.Component {
       const showDate = d.toDateString();
       return (
         // Each individual card layout
-        <div key={issue.createdAt}>
-          <div
-            style={{
-              fontSize: "10px",
-              padding: "0.25rem 1rem",
-              fontFamily: "montserrat",
-              fontWeight: "200",
-            }}
-          >
-            {showDate}
-          </div>
-          <div className="title">
-            <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
-          </div>
+        <Card key={issue.createdAt}>
           <div>
+            <div className="title">
+              <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
+            </div>
+            <div>{showDate}</div>
+          </div>
+
+          <CardContent>
             <div className="description">{issue.description}</div>
             {this.renderAdmin(issue)}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       );
     });
   }

@@ -3,7 +3,10 @@ import _ from "lodash";
 export default (state = {}, action) => {
   switch (action.type) {
     case "FETCH_ISSUES":
-      return { ...state, ..._.mapKeys(action.payload, "_id") };
+      return {
+        ...state,
+        ..._.mapKeys(action.payload, "_id"),
+      };
 
     case "FETCH_ISSUE":
       return {
@@ -23,7 +26,7 @@ export default (state = {}, action) => {
     case "CREATE_ISSUE":
       return {
         ...state,
-        [action.payload.id]: action.payload,
+        [action.payload._id]: action.payload,
       };
     default:
       return state;
