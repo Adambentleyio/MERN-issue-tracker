@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
 import { bindActionCreators } from "redux";
@@ -70,20 +70,16 @@ const CardContent = styled.div`
   }
 `;
 
-class IssueList extends React.Component {
-  componentDidMount() {
-    console.log(this.props.issues);
-    this.props.fetchIssues();
-  }
+const IssueList = () => {
+  const dispatch = useDispatch();
+  const currentUserId = useSelector((state) => state.auth.UserId);
+  const isSignedIn = useSelector((state) => state.auth.isSIgnedIn);
+  const issues = useSelector((state) => Object.values(state.issues));
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.issues !== this.props.issues) {
-  //     this.props.fetchIssues();
-  //   }
-  // }
+  useEffect(() => dispatch(fetchIssues()), [dispatch]);
 
-  renderAdmin(issue) {
-    if (issue.userId === this.props.currentUserId) {
+  const renderAdmin = (issue) => {
+    if (issue.userId === currentUserId) {
       return (
         <div className="admin-panel">
           <Link className="btn btn-edit" to={`/issue/edit/${issue._id}`}>
@@ -107,10 +103,10 @@ class IssueList extends React.Component {
           </Link>
         </div>
       );
-  }
+  };
 
-  renderList() {
-    return this.props.issues.map((issue) => {
+  const renderList = () => {
+    return issues.map((issue) => {
       const d = new Date(issue.createdAt);
       const showDate = d.toDateString();
       return (
@@ -125,15 +121,15 @@ class IssueList extends React.Component {
 
           <CardContent>
             <div className="description">{issue.description}</div>
-            {this.renderAdmin(issue)}
+            {renderAdmin(issue)}
           </CardContent>
         </Card>
       );
     });
-  }
+  };
 
-  renderCreate() {
-    if (this.props.isSignedIn) {
+  const renderCreate = () => {
+    if (isSignedIn) {
       return (
         <div style={{ textAlign: "right" }}>
           <Link
@@ -146,33 +142,14 @@ class IssueList extends React.Component {
         </div>
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <div style={{ maxWidth: "900px" }}>
-        <div className="ui celled list">{this.renderList()}</div>
-        {this.renderCreate()}
-      </div>
-    );
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    {
-      fetchIssues: fetchIssues,
-    },
-    dispatch
+  return (
+    <div style={{ maxWidth: "900px" }}>
+      <div className="ui celled list">{renderList()}</div>
+      {renderCreate()}
+    </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    issues: Object.values(state.issues),
-    isSignedIn: state.auth.isSignedIn,
-    currentUserId: state.auth.userId,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(IssueList);
+export default IssueList;
