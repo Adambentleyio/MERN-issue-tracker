@@ -13,9 +13,9 @@ export default (state = {}, action) => {
         ...state,
         [action.payload.id]: action.payload,
       };
-    case "DELETE_STREAM":
+    case "DELETE_ISSUE":
       return Object.keys(state).reduce((newState, key) => {
-        if (key !== action.payload[0]) newState[key] = state[key];
+        if (key !== action.payload) newState[key] = state[key];
         return newState;
       }, {});
     case "EDIT_ISSUE":

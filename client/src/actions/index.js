@@ -64,8 +64,16 @@ export const editIssue = (id, formValues) => async (dispatch) => {
 };
 
 export const deleteIssue = (id) => async (dispatch) => {
-  await issues.delete(`/issues/${id}`);
+  try {
+    await issues.delete(`/issues/${id}`);
 
-  history.push("/");
-  dispatch({ type: "DELETE_ISSUE", payload: id });
+    dispatch({
+      type: "DELETE_ISSUE",
+      payload: id,
+    });
+
+    history.push("/");
+  } catch (error) {
+    console.log(error);
+  }
 };

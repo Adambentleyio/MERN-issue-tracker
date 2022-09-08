@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
-import { bindActionCreators } from "redux";
 import styled from "styled-components";
 
 const Card = styled.div`
@@ -72,8 +71,9 @@ const CardContent = styled.div`
 
 const IssueList = () => {
   const dispatch = useDispatch();
+
   const currentUserId = useSelector((state) => state.auth.UserId);
-  const isSignedIn = useSelector((state) => state.auth.isSIgnedIn);
+  const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const issues = useSelector((state) => Object.values(state.issues));
 
   useEffect(() => dispatch(fetchIssues()), [dispatch]);
@@ -111,7 +111,7 @@ const IssueList = () => {
       const showDate = d.toDateString();
       return (
         // Each individual card layout
-        <Card key={issue.createdAt}>
+        <Card key={issue.title}>
           <div>
             <div className="title">
               <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
@@ -121,6 +121,7 @@ const IssueList = () => {
 
           <CardContent>
             <div className="description">{issue.description}</div>
+            <div>{issue.status}</div>
             {renderAdmin(issue)}
           </CardContent>
         </Card>
