@@ -13,6 +13,8 @@ const IssueDelete = (props) => {
 
   const issue = useSelector((state) => state.issues[props.match.params.id]);
 
+  useEffect(() => dispatch(fetchIssue(issue)));
+
   const handleClick = (id) => {
     dispatch(deleteIssue(id));
   };

@@ -43,8 +43,9 @@ class IssueForm extends React.Component {
     );
   };
 
-  handleSubmit = (formValues) => {
-    this.props.handleSubmit(formValues);
+  onSubmit = (formValues) => {
+    console.log(formValues);
+    this.props.onSubmit(formValues);
   };
 
   render() {
