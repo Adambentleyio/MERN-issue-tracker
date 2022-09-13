@@ -11,9 +11,14 @@ const IssueDelete = (props) => {
 
   // get the issue from redux state and store it in variable "issue"
 
-  const issue = useSelector((state) => state.issues[props.match.params.id]);
+  useEffect(() => {
+    let issue = props.match.params.id;
+    let res = dispatch(fetchIssue(issue));
+    console.log(`useEffect is fetching issue: ${issue} and got ${res}`);
+  }, []);
 
-  useEffect(() => dispatch(fetchIssue(issue)));
+  const stateIssues = useSelector((state) => state.issues);
+  const stateIssue = stateIssues[props.match.params.id];
 
   const handleClick = (id) => {
     dispatch(deleteIssue(id));
@@ -21,20 +26,18 @@ const IssueDelete = (props) => {
 
   const renderContent = () => {
     // get title of item and display it
-    if (!issue) {
+    if (!stateIssue) {
       return "Are you sure you want to delete this issue?";
     }
-    return `Are you sure you want to delete: ${issue.title} ?`;
+    return `Are you sure you want to delete: ${stateIssue.title} ?`;
   };
 
   const renderActions = () => {
-    console.log(issue);
+    const _id = props.match.params.id;
+    console.log(`_id : ${_id}`);
     return (
       <React.Fragment>
-        <button
-          className="ui button negative"
-          onClick={() => handleClick(issue._id)}
-        >
+        <button className="ui button negative" onClick={() => handleClick(_id)}>
           Delete
         </button>
         <Link to="/" className="ui button">
