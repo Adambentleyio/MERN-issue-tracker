@@ -11,7 +11,7 @@ export default (state = {}, action) => {
     case "FETCH_ISSUE":
       return {
         ...state,
-        [action.payload._id]: action.payload,
+        [action.payload.id]: action.payload,
       };
     case "DELETE_ISSUE":
       return Object.keys(state).reduce((newState, key) => {

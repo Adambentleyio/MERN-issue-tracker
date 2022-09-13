@@ -49,13 +49,13 @@ const updateIssue = async (req, res) => {
 };
 
 const deleteIssue = async (req, res) => {
-  await issueMessage.deleteOne(
+  await issueMessage.remove(
     {
       _id: req.params.id,
     },
-    function (err, result) {
+    function (err, issue) {
       if (err) res.send(err);
-      res.json(result);
+      res.json({ message: "Huzzah, your issue was successfully deleted" });
     }
   );
 };

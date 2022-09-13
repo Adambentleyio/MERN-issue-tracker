@@ -6,8 +6,8 @@ import IssueForm from "./IssueForm";
 
 class IssueEdit extends React.Component {
   componentDidMount() {
-    let res = this.props.fetchIssue(this.props.match.params.id);
-    console.log(res);
+    this.props.fetchIssue(this.props.match.params.id);
+    // console.log(this.props.match.params.id);
   }
 
   onSubmit = (formValues) => {
