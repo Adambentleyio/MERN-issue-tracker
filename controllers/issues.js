@@ -48,16 +48,27 @@ const updateIssue = async (req, res) => {
   );
 };
 
+// const deleteIssue = async (req, res) => {
+//   await issueMessage.remove(
+//     {
+//       _id: req.params.id,
+//     },
+//     function (err, issue) {
+//       if (err) res.send(err);
+//       res.json({ message: "Huzzah, your issue was successfully deleted" });
+//     }
+//   );
+// };
+
 const deleteIssue = async (req, res) => {
-  await issueMessage.remove(
-    {
+  try {
+    await issueMessage.deleteOne({
       _id: req.params.id,
-    },
-    function (err, issue) {
-      if (err) res.send(err);
-      res.json({ message: "Huzzah, your issue was successfully deleted" });
-    }
-  );
+    });
+    res.status(200).json({ message: "Issue delete successful!" });
+  } catch (error) {
+    res.status(500).json({ error: "There was a Server Side Error!" });
+  }
 };
 
 module.exports = {
