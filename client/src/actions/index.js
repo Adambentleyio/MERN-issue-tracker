@@ -48,7 +48,7 @@ export const fetchIssues = () => async (dispatch) => {
 
 export const fetchIssue = (id) => async (dispatch) => {
   const response = await issues.get(`/issues/${id}`);
-
+  console.log(response);
   dispatch({ type: "FETCH_ISSUE", payload: response.data });
 };
 

@@ -6,20 +6,28 @@ import styled from "styled-components";
 
 const Card = styled.div`
   position: relative;
-  width: 375px;
   margin: 2rem;
   padding: 1.2rem 1rem;
   transition: 0.8s;
 
   .title a {
-    display: block;
-    margin-bottom: 0.7rem;
-    width: 80%;
+    display: flex;
     color: #333;
+  }
+
+  .title .name {
+    margin-bottom: 0.7rem;
     text-decoration: none;
     font-size: 1.6rem;
     font-family: Roboto;
     font-weight: 800;
+    align-self: flex-end;
+  }
+
+  .title .edit {
+    padding: 0 0.3rem;
+    font-size: 0.8rem;
+    align-self: flex-start;
   }
 `;
 
@@ -27,24 +35,15 @@ const CardContent = styled.div`
   /* position: absolute; */
   font-family: inter;
   overflow: hidden;
-  margin-top: 0.8rem;
-  height: 55%;
+  margin-top: 1.5rem;
   width: 100%;
-  padding-bottom: 0.6rem;
   border-bottom: 1px solid #d1d1d1;
 
-  .description {
-    /* margin-top: 1rem; */
-    display: flex;
-    /* align-items: center; */
-    /* justify-content: center; */
-  }
   .admin-panel {
-    margin: auto 0 0 0;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
+
   btn,
   a {
     color: #e6eef6;
@@ -52,17 +51,16 @@ const CardContent = styled.div`
     margin: 0 1rem;
     border-radius: 20px;
   }
+
   .btn-delete {
     color: #313131;
     transition: 0.2s;
-    margin-top: 1rem;
   }
   .btn-edit {
     color: #313131;
-    width: 3rem;
-    margin: 1rem 0 0 auto;
     transition: 0.2s;
   }
+
   .btn-edit:hover,
   .btn-delete:hover {
     color: orange;
@@ -76,7 +74,9 @@ const IssueList = () => {
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const issues = useSelector((state) => Object.values(state.issues));
 
-  useEffect(() => dispatch(fetchIssues()), [dispatch]);
+  useEffect(() => {
+    dispatch(fetchIssues());
+  }, [dispatch]);
 
   const renderAdmin = (issue) => {
     if (issue.userId === currentUserId) {
@@ -114,7 +114,10 @@ const IssueList = () => {
         <Card key={issue.title}>
           <div>
             <div className="title">
-              <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
+              <Link to={`/issue/${issue._id}`}>
+                <div className="title name">{issue.title}</div>
+                <i class="edit icon"></i>
+              </Link>
             </div>
             <div>{showDate}</div>
           </div>
@@ -132,12 +135,8 @@ const IssueList = () => {
   const renderCreate = () => {
     if (isSignedIn) {
       return (
-        <div style={{ textAlign: "right" }}>
-          <Link
-            to="/issue/new"
-            className="ui button"
-            style={{ backgroundColor: "#e6eef6", color: "#022a52" }}
-          >
+        <div>
+          <Link to="/issue/new" className="ui button">
             Create a new issue
           </Link>
         </div>
@@ -146,8 +145,8 @@ const IssueList = () => {
   };
 
   return (
-    <div style={{ maxWidth: "900px" }}>
-      <div className="ui celled list">{renderList()}</div>
+    <div>
+      <div>{renderList()}</div>
       {renderCreate()}
     </div>
   );
