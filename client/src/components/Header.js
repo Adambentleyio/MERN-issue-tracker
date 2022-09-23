@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import GoogleAuth from "./GoogleAuth";
 import styled from "styled-components";
+
 
 const Nav = styled.div`
   display: flex;
@@ -19,19 +20,17 @@ const Nav = styled.div`
 `;
 
 const Header = () => {
+
   return (
     <div>
       <Nav>
         <div>
-          <Link className="item" to="/">
+          <NavLink to="/">
             All Issues
-          </Link>
-          <Link className="item" to="/issue/new">
+          </NavLink>
+          <NavLink to="/issue/new">
             Create Issue
-          </Link>
-          {/* <Link className="item" to="/express">
-            Express Test
-          </Link> */}
+          </NavLink>
         </div>
         <div className="right menu">
           <GoogleAuth />
