@@ -1,4 +1,3 @@
-import { clamp } from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signIn, signOut } from "../actions";
@@ -60,7 +59,6 @@ class GoogleAuth extends Component {
             height: "clamp(2.5rem, 2.5vw, 6rem)",
           }}
           className="ui google button"
-          style={{ backgroundColor: "#F2F4F7" }}
           onClick={this.onSignOutClick}
         >
           <i className="google icon" />

@@ -49,15 +49,24 @@ const CardContent = styled.div`
 `;
 
 const IssueList = () => {
+
   const dispatch = useDispatch();
 
   const currentUserId = useSelector((state) => state.auth.UserId);
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const issues = useSelector((state) => Object.values(state.issues));
 
-  useEffect(() => dispatch(fetchIssues()), [dispatch, issues]);
+  useEffect(() => dispatch(fetchIssues()), [dispatch]);
 
-  const [chronoligcal, setIsChronological] = useState(true);
+  const [sortItemChronology, setSortItemChronology] = useState('desc');
+
+  const sortedItems = issues.sort((a, b) => {
+      // use localeCompare to compare two non number strings as dates
+      // return sortItemChronology === "desc" ? b.createdAt.localeCompare(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
+      return sortItemChronology === "desc" ? new Date(b.createdAt) - new Date(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
+  }
+  )
+
 
   const renderAdmin = (issue) => {
     if (issue.userId === currentUserId) {
@@ -86,24 +95,10 @@ const IssueList = () => {
       );
   };
 
-  const sortedIssueArray = () => {
-    if (chronoligcal) {
-      setIsChronological(false)
-      console.log(chronoligcal)
-      issues.sort(function(a,b){
-        return new Date(b.createdAt) - new Date(a.createdAt);})
-    } else {
-      setIsChronological(true)
-      console.log(chronoligcal)
-      issues.sort(function(a,b){
-        return new Date(a.createdAt) - new Date(b.createdAt);
-    })
-  }
-}
-
   const renderList = () => {
 
-    return issues.map((issue) => {
+    return sortedItems.map((issue) => {
+      console.log(new Date (issue.createdAt))
       const d = new Date(issue.createdAt);
       const showDate = d.toDateString();
       return (
@@ -144,8 +139,8 @@ const IssueList = () => {
 
   return (
     <div style={{ maxWidth: "900px" }}>
-      <button onClick={sortedIssueArray}>⬆ Date created</button>
-      <button onClick={sortedIssueArray}>⬇ Date created</button>
+      <button onClick={() => setSortItemChronology('asc')}>Latest First</button>
+      <button onClick={() => setSortItemChronology('desc')}>Newest First</button>
       <div>{renderCreate()}</div>
       <div className="ui celled list">{renderList()}</div>
     </div>

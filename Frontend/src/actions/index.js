@@ -19,7 +19,7 @@ export const createIssue = (formValues) => {
   return async (dispatch, getState) => {
     try {
       const { userId } = getState().auth;
-      const postData = { ...formValues, userId };
+      const postData = { ...formValues, createdAt: new Date(), userId };
       const response = await issues.post("/issues", postData);
 
       dispatch({

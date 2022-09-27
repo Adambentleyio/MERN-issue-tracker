@@ -16,7 +16,7 @@ const IssueDelete = (props) => {
   useEffect(() => {
     let issueId = props.match.params.id;
     dispatch(fetchIssue(issueId));
-  }, []);
+  }, [dispatch, props.match.params.id]);
 
   const handleClick = (id) => {
     dispatch(deleteIssue(id));
@@ -31,7 +31,7 @@ const IssueDelete = (props) => {
   };
 
   const renderActions = () => {
-    console.log(issue);
+
     return (
       <React.Fragment>
         <button
