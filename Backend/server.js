@@ -18,8 +18,6 @@ app.use(express.json());
 // allow our api to receive data from a client app
 app.use(express.urlencoded({ extended: true }));
 
-// api_key = `${process.env.API_USER}:${process.env.API_PASS}`;
-
 const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 // console.log(CONNECTION_URL);
 
@@ -31,15 +29,17 @@ mongoose
   .catch((error) => console.log(error.message));
 
 // Pick up React index.html file
-if (process.env.NODE_ENV === "production") {
-  // set static folder
-  console.log("running in production mode");
-  app.use(express.static(path.join(__dirname, "../client/build")));
+//commenting below to see if I can run the app in render.com
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
+// if (process.env.NODE_ENV === "production") {
+//   // set static folder
+//   console.log("running in production mode");
+//   app.use(express.static(path.join(__dirname, "../client/build")));
+
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+//   });
+// }
 
 app.use("/issues", issueRoutes);
 
