@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
 import styled from "styled-components";
+import { toTitleCase } from "../helpers/toTitleCase";
 
 const Card = styled.div`
   position: relative;
@@ -98,7 +99,6 @@ const IssueList = () => {
   const renderList = () => {
 
     return sortedItems.map((issue) => {
-      console.log(new Date (issue.createdAt))
       const d = new Date(issue.createdAt);
       const showDate = d.toDateString();
       return (
@@ -108,12 +108,14 @@ const IssueList = () => {
             <div className="title">
               <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
             </div>
-            <div>{showDate}</div>
+            <div style={{display: "flex"}}>
+              <div>{showDate}</div>
+              <div style={{color: "purple", marginLeft: "0.6rem"}}>{toTitleCase(issue.status)}</div>
+            </div>
           </div>
 
           <CardContent>
             <div className="description">{issue.description}</div>
-            <div>{issue.status}</div>
             {renderAdmin(issue)}
           </CardContent>
         </Card>
