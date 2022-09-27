@@ -18,7 +18,7 @@ app.use(express.json());
 // allow our api to receive data from a client app
 app.use(express.urlencoded({ extended: true }));
 
-const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&authSource=admin`;
 // console.log(CONNECTION_URL);
 
 mongoose
