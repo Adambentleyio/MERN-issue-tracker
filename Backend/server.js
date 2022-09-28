@@ -1,13 +1,23 @@
+require("dotenv").config();
 const express = require("express");
+const app = express();
+const path = require("path");
+const { logger, logEvents } = require('./middleware/logger');
+const { errorHandler } = require('./middleware/errorHandler')
+
 const cors = require("cors");
-const mongoose = require("mongoose");
+const corsOptions = require('./config/corsOptions')
 const bodyParser = require("body-parser");
 const issueRoutes = require("./routes/issues.js");
-require("dotenv").config();
-const path = require("path");
-
-const app = express();
+const { appendFile } = require("fs");
+const cookieParser = require("cookie-parser");
+const connectDB = require('./config/dbConn.js');
+const mongoose = require("mongoose");
 const PORT = process.env.PORT || 5000;
+
+connectDB()
+
+app.use(logger)
 
 // allow api for cross-origin resource sharing
 app.use(cors());
@@ -15,18 +25,24 @@ app.use(cors());
 // allow our api for parsing JSON
 app.use(express.json());
 
+// allow our api to handle cookies
+app.use(cookieParser())
+
 // allow our api to receive data from a client app
 app.use(express.urlencoded({ extended: true }));
 
-const CONNECTION_URL = `mongodb+srv://${process.env.MONG_LOGIN}@mern01.akpif.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&authSource=admin`;
-// console.log(CONNECTION_URL);
+console.log("Node Env: " + process.env.NODE_ENV)
+const CONNECTION_URL = process.env.DATABASE_URI;
 
-mongoose
-  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() =>
-    app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
-  )
-  .catch((error) => console.log(error.message));
+  mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB')
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
+  })
+
+  mongoose.connection.on('error', err => {
+    console.log(err)
+    logEvents(`${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`, 'mongoErrLog.log')
+  })
 
 // Pick up React index.html file
 //commenting below to see if I can run the app in render.com
@@ -42,6 +58,23 @@ mongoose
 // }
 
 app.use("/issues", issueRoutes);
+
+//! Throws error that app.use() requires middleware function ⬇
+
+//! app.use(errorHandler);
+
+//
+//
+//
+// OLD CODE
+
+// mongoose connection
+// mongoose
+//   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() =>
+//     app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
+//   )
+//   .catch((error) => console.log(error.message));
 
 // testing the fetchIssues reducer
 
