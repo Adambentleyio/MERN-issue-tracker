@@ -11,19 +11,22 @@ class GoogleAuth extends Component {
   // set the new state equal to the GAPI isSignedIn method.
 
   componentDidMount() {
-    window.gapi.load("client:auth2", () => {
-      window.gapi.client
-        .init({
-          clientId:
-            "284084667086-lip1051ib5uc4s4elb4ab52754g7q4ap.apps.googleusercontent.com",
-          scope: "email",
-        })
-        .then(() => {
-          this.auth = window.gapi.auth2.getAuthInstance();
-          this.onAuthChange(this.auth.isSignedIn.get());
-          this.auth.isSignedIn.listen(this.onAuthChange);
-        });
-    });
+    if (window.gapi) {
+      window.gapi.load("client:auth2", () => {
+        window.gapi.client
+          .init({
+            clientId:
+              "284084667086-lip1051ib5uc4s4elb4ab52754g7q4ap.apps.googleusercontent.com",
+            scope: "email",
+          })
+          .then(() => {
+            this.auth = window.gapi.auth2.getAuthInstance();
+            this.onAuthChange(this.auth.isSignedIn.get());
+            this.auth.isSignedIn.listen(this.onAuthChange);
+          });
+      })
+    }
+    return;
   }
 
   onAuthChange = (isSignedIn) => {
