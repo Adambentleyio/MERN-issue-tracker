@@ -5,12 +5,12 @@ import {Link } from 'react-router-dom';
 
 
 const Nav = styled.nav`
-  background: #63d471;
+  background: #121111;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid #022a52;
-`;
+  border-bottom: 2px solid #212121;
+  `
 
 const NavLink = styled(Link)`
   color: #808080;

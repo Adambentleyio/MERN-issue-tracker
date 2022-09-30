@@ -9,6 +9,8 @@ import IssueCreate from "./components/IssueCreate";
 import Header from "./components/Header";
 import noMatch from "./components/noMatch";
 import ExpressTest from "./components/ExpressTest";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { appTheme } from "./themes/theme";
 
 // 1. create the route.
 // 2. create header element
@@ -17,6 +19,8 @@ import ExpressTest from "./components/ExpressTest";
 const app = () => {
   return (
     <div className="ui container" style={{ padding: "20px 0 20px 0" }}>
+      <ThemeProvider theme={appTheme}>
+        <CssBaseline enableColorScheme />
       <Router history={history}>
         <div>
           <div>
@@ -42,6 +46,7 @@ const app = () => {
           </div>
         </div>
       </Router>
+      </ThemeProvider>
     </div>
   );
 };

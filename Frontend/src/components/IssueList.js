@@ -4,50 +4,11 @@ import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
 import styled from "styled-components";
 import { toTitleCase } from "../helpers/toTitleCase";
+import Button from '@mui/material/Button';
+import { Card, CardContent, IconButton, Stack, Typography } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-const Card = styled.div`
-  position: relative;
-  max-width: 10rem + 60vw;
-  padding: 1.2rem 0;
-  transition: 0.8s;
-
-  .title a {
-    display: block;
-    margin-bottom: 0.7rem;
-    color: #333;
-    text-decoration: none;
-    font-size: 1.6rem;
-    font-family: Roboto;
-    font-weight: 800;
-  }
-`;
-
-const CardContent = styled.div`
-  font-family: inter;
-  padding: 0.8rem 0;
-
-  .admin-panel {
-    margin:  1rem 0 0 auto;
-    width: 100%;
-    display: flex;
-  }
-  .btn {
-    font-weight: 800;
-  }
-  .btn:nth-of-type(2) {
-    padding-left: 0.6rem;
-  }
-  .btn-delete {
-    transition: 0.2s;
-  }
-  .btn-edit {
-    transition: 0.2s;
-  }
-  .btn-edit:hover,
-  .btn-delete:hover {
-    color: #221ee0;
-  }
-`;
 
 const IssueList = () => {
 
@@ -69,82 +30,101 @@ const IssueList = () => {
   )
 
 
-  const renderAdmin = (issue) => {
-    if (issue.userId === currentUserId) {
-      return (
-        <div className="admin-panel">
-          <Link className="btn btn-edit" to={`/issue/edit/${issue._id}`}>
-            Edit
-          </Link>
-
-          <Link className="btn btn-delete" to={`issue/delete/${issue._id}`}>
-            Delete
-          </Link>
-        </div>
-      );
-    } else
-      return (
-        <div className="admin-panel">
-          <Link className="btn btn-edit" to={`/issue/edit/${issue._id}`}>
-            Edit
-          </Link>
-
-          <Link className="btn btn-delete" to={`issue/delete/${issue._id}`}>
-            Delete
-          </Link>
-        </div>
-      );
-  };
-
   const renderList = () => {
 
     return sortedItems.map((issue) => {
       const d = new Date(issue.createdAt);
       const showDate = d.toDateString();
+      let statusColor = `${issue.status ? "error" : "secondary"}`
+
       return (
         // Each individual card layout
-        <Card key={issue.title}>
-          <div>
-            <div className="title">
-              <Link to={`/issue/${issue._id}`}>{issue.title}</Link>
-            </div>
-            <div style={{display: "flex"}}>
-              <div>{showDate}</div>
-              <div style={{color: "purple", marginLeft: "0.6rem"}}>{toTitleCase(issue.status)}</div>
-            </div>
-          </div>
-
+        <Card key={issue.title} sx={{mb: 2}}>
           <CardContent>
-            <div className="description">{issue.description}</div>
-            {renderAdmin(issue)}
+            <Typography variant="h4" sx={{fontSize: 24}}>
+              <Link style={{color: "white"}} to={`/issue/${issue._id}`}>{issue.title}</Link>
+            </Typography>
+            <Stack direction="row" spacing={2} sx={{mb: 2}}>
+              <Typography variant="p">{showDate}</Typography>
+              <Typography style={issue.status === "urgent" ? {color: "#e62828"} : {color: "#666"}}>{toTitleCase(issue.status)}</Typography>
+            </Stack>
+            <Typography sx={{fontSize: 14, mb: 2}}>{issue.description}</Typography>
+              {renderAdmin(issue)}
           </CardContent>
         </Card>
       );
     });
   };
 
+  const renderAdmin = (issue, currentUserId) => {
+    if (issue.userId === currentUserId) {
+      return (
+
+        <Stack direction="row" spacing={2}>
+          Button
+          <Link to={`/issue/edit/${issue._id}`}>
+            Edit
+          </Link>
+
+          <Link to={`issue/delete/${issue._id}`}>
+            Delete
+          </Link>
+        </Stack>
+
+      );
+    } else
+    return (
+
+      <Stack direction="row">
+        <IconButton size="small">
+          <Link style={{color: "#666"}} to={`/issue/edit/${issue._id}`}>
+          <EditIcon />
+          </Link>
+        </IconButton>
+        <IconButton>
+          <Link style={{color: "#666"}} to={`issue/delete/${issue._id}`}>
+        <DeleteIcon />
+          </Link>
+        </IconButton>
+      </Stack>)
+  };
+
+  const sortComponent = () => {
+    return (
+      <>
+      <Stack direction="row" sx={{mb: 2}}>
+        <Button color="neutral" onClick={() => setSortItemChronology('asc')}>Latest First</Button>
+        <Button color="neutral" onClick={() => setSortItemChronology('desc')}>Newest First</Button>
+      </Stack>
+      </>
+    )
+  }
+
   const renderCreate = () => {
     if (isSignedIn) {
       return (
-        <div style={{ textAlign: "right" }}>
-          <Link
-            to="/issue/new"
-            className="ui button"
-            style={{ backgroundColor: "#e6eef6", color: "#022a52" }}
-          >
-            Create a new issue
-          </Link>
+        <div>
+          <Button variant="contained" color="neutral" sx={{mb: 2}}>
+            <Link style={{color: "#333"}}
+              to="/issue/new"
+            >
+              <Typography>
+              Create issue
+              </Typography>
+            </Link>
+          </Button>
         </div>
       );
     }
   };
 
+  //! component Return
+
   return (
     <div style={{ maxWidth: "900px" }}>
-      <button onClick={() => setSortItemChronology('asc')}>Latest First</button>
-      <button onClick={() => setSortItemChronology('desc')}>Newest First</button>
+      <div>{sortComponent()}</div>
       <div>{renderCreate()}</div>
-      <div className="ui celled list">{renderList()}</div>
+      <div>{renderList()}</div>
     </div>
   );
 };

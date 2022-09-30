@@ -1,6 +1,5 @@
 import issues from "../apis/issues";
 import history from "../history";
-import axios from "axios";
 
 export const signIn = (userId) => {
   return {

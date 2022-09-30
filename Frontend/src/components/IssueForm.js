@@ -21,7 +21,7 @@ class IssueForm extends React.Component {
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     return (
       <div className={className}>
-        <label>{label}</label>
+        <label style={{color: "#f0f0f0"}}>{label}</label>
         <input {...input} autoComplete="off" />
         {this.renderError(meta)}
       </div>
@@ -32,7 +32,7 @@ class IssueForm extends React.Component {
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     return (
       <div className={className}>
-        <label>Select Status</label>
+        <label style={{color: "#f0f0f0"}}>Select Status</label>
         <Field name={label} component="select">
           <option />
           <option value="urgent">Urgent</option>
@@ -63,7 +63,7 @@ class IssueForm extends React.Component {
         <Field name="status" component={this.renderDropdown} label="status" />
         <button
           className="ui button"
-          style={{ backgroundColor: "#022a52", color: "#e6eef6" }}
+          style={{ backgroundColor: "#f0f0f0", color: "#333" }}
         >
           Submit
         </button>
