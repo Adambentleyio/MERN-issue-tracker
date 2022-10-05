@@ -29,7 +29,12 @@ const NavMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 
+  @media (max-width: 320px) {
+    flex-direction: column;
+    margin: 0 auto;
+  }
 `
 
 const Header = () => {
@@ -40,13 +45,13 @@ const Header = () => {
         <NavMenu>
         <div>
           <NavLink to="/">
-            All Issues
+            All
           </NavLink>
           <NavLink to="/issue/new">
-            Create Issue
+            New
           </NavLink>
         </div>
-        <div >
+        <div>
           <GoogleAuth />
         </div>
         </NavMenu>

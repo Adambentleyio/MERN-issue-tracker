@@ -31,7 +31,7 @@ const IssueList = () => {
   }
   )
 
-  const renderList = () => {
+  const RenderList = () => {
 
     // isSignedIn & currentUserId === issues.UserId
     if (isSignedIn) {
@@ -67,7 +67,7 @@ const IssueList = () => {
   };
 
   const sortComponent = () => {
-    if (isSignedIn || issues.length < 0) {
+    if (isSignedIn || issues.length < 1) {
       return (
         <>
         <Stack direction="row" sx={{mb: 2}}>
@@ -79,23 +79,22 @@ const IssueList = () => {
     }
   }
 
-  const renderCreate = () => {
+const renderCreate = () => {
     if (isSignedIn) {
       return (
-        <div>
-          <Button variant="outlined" sx={{mb: 2}}>
-            <Link style={{color: "#c0c0c0"}}
-              to="/issue/new"
-            >
-              <Typography>
-              Create issue
-              </Typography>
-            </Link>
-          </Button>
-        </div>
-      );
-    }
-  };
+          <div>
+            <Button variant="outlined" sx={{mb: 2}}>
+              <Link style={{color: "#c0c0c0"}}
+                to="/issue/new"
+              >
+                <Typography>
+                Create issue
+                </Typography>
+              </Link>
+            </Button>
+          </div>
+      )
+  }}
 
   //! component Return
 
@@ -103,9 +102,10 @@ const IssueList = () => {
     <div style={{ maxWidth: "900px"}}>
       <div style={{display: "flex", alignItems: "center"}}>
         <div>{renderCreate()}</div>
+        {/* <RenderCreate /> */}
         <div style={{marginLeft: "auto"}}>{sortComponent()}</div>
       </div>
-      <div>{renderList()}</div>
+      <RenderList />
     </div>
   );
 };

@@ -95,9 +95,9 @@ class GoogleAuth extends Component {
         <div style={{ display: "flex" }}>
           <img
             style={{
-              width: "100%",
-              height: "clamp(2.5rem, 2.5vw, 6rem)",
-              borderRadius: "50px",
+              width: "30px",
+              height: "30px",
+              borderRadius: "50%",
             }}
             src={profile.getImageUrl()}
             alt=""
