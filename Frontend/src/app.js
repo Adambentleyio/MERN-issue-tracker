@@ -11,6 +11,7 @@ import noMatch from "./components/noMatch";
 import ExpressTest from "./components/ExpressTest";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { appTheme } from "./themes/theme";
+import './index.css'
 
 // 1. create the route.
 // 2. create header element

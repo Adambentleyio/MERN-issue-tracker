@@ -5,15 +5,11 @@ import { fetchIssue } from "../actions";
 class IssueShow extends React.Component {
   componentDidMount() {
     this.props.fetchIssue(this.props.match.params.id);
-    console.log("this is undefined? " + this.props.match.params.id)
   }
 
   render() {
-    console.log(this.props.issue)
-    if (!this.props.issue) {
-      return <div>Loading...</div>;
-    } else {
-
+    console.log("issue: " + this.props.issue)
+    if (this.props?.issue) {
       const { title, description } = this.props.issue;
       return (
         <div>
@@ -21,6 +17,8 @@ class IssueShow extends React.Component {
           <h5>{description}</h5>
         </div>
       );
+    } else {
+      return <div>Loading...</div>;
     }
   }
 }

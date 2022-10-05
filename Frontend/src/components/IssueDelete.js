@@ -53,7 +53,7 @@ const IssueDelete = (props) => {
           Delete
         </Button>
         <Button variant="outlined">
-          <Link to="/">
+          <Link style={{color: "gray"}} to="/">
             Cancel
           </Link>
         </Button>

@@ -2,6 +2,7 @@ import issues from "../apis/issues";
 import history from "../history";
 
 export const signIn = (userId) => {
+  console.log("action creator signIn action: " + userId);
   return {
     type: "SIGN_IN",
     payload: userId,

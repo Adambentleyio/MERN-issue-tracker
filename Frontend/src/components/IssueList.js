@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchIssues } from "../actions";
-import styled from "styled-components";
+
 import { toTitleCase } from "../helpers/toTitleCase";
 import Button from '@mui/material/Button';
-import { Card, CardContent, IconButton, Stack, Typography } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { Card, CardContent, Stack, Typography } from "@mui/material";
+import SortIcon from '@mui/icons-material/Sort';
+import RenderAdmin from "./RenderAdmin";
 
 
 const IssueList = () => {
 
   const dispatch = useDispatch();
-
-  const currentUserId = useSelector((state) => state.auth.UserId);
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+  const currentUserId = useSelector((state) => state.auth.userId);
   const issues = useSelector((state) => Object.values(state.issues));
 
-  useEffect(() => dispatch(fetchIssues()), [dispatch]);
+  useEffect(() => {
+    dispatch(fetchIssues())
+  }, [dispatch, currentUserId]
+  );
 
   const [sortItemChronology, setSortItemChronology] = useState('desc');
 
@@ -29,83 +31,60 @@ const IssueList = () => {
   }
   )
 
-
   const renderList = () => {
 
+    // isSignedIn & currentUserId === issues.UserId
+    if (isSignedIn) {
     return sortedItems.map((issue) => {
+
       const d = new Date(issue.createdAt);
       const showDate = d.toDateString();
-      let statusColor = `${issue.status ? "error" : "secondary"}`
 
       return (
         // Each individual card layout
-        <Card key={issue.title} sx={{mb: 2}}>
+        <Card key={issue.title} sx={{mb: 2, maxWidth: "40rem"}}>
+
           <CardContent>
-            <Typography variant="h4" sx={{fontSize: 24}}>
-              <Link style={{color: "white"}} to={`/issue/${issue._id}`}>{issue.title}</Link>
+
+            <Typography variant="h3" sx={{fontSize: '2.3rem', mb: 1.5}}>
+              {issue.title}
             </Typography>
-            <Stack direction="row" spacing={2} sx={{mb: 2}}>
+
+            <Stack direction="row" spacing={2} sx={{mb: 2.5, color: "gray"}}>
               <Typography variant="p">{showDate}</Typography>
-              <Typography style={issue.status === "urgent" ? {color: "#e62828"} : {color: "#666"}}>{toTitleCase(issue.status)}</Typography>
+              <Typography variant="p" style={issue.status === "urgent" ? {color: '#2a818c'} : {color: "gray"}}>{toTitleCase(issue.status)}</Typography>
             </Stack>
-            <Typography sx={{fontSize: 14, mb: 2}}>{issue.description}</Typography>
-              {renderAdmin(issue)}
+
+            <Typography sx={{mb: 2.5, fontSize: '1.2rem'}}>{issue.description}</Typography>
+
+            <RenderAdmin issue={issue} currentUserId={currentUserId} />
+
           </CardContent>
         </Card>
       );
     });
-  };
-
-  const renderAdmin = (issue, currentUserId) => {
-    if (issue.userId === currentUserId) {
-      return (
-
-        <Stack direction="row" spacing={2}>
-          Button
-          <Link to={`/issue/edit/${issue._id}`}>
-            Edit
-          </Link>
-
-          <Link to={`issue/delete/${issue._id}`}>
-            Delete
-          </Link>
-        </Stack>
-
-      );
-    } else
-    return (
-
-      <Stack direction="row">
-        <IconButton size="small">
-          <Link style={{color: "#666"}} to={`/issue/edit/${issue._id}`}>
-          <EditIcon />
-          </Link>
-        </IconButton>
-        <IconButton>
-          <Link style={{color: "#666"}} to={`issue/delete/${issue._id}`}>
-        <DeleteIcon />
-          </Link>
-        </IconButton>
-      </Stack>)
+  } return <h3>Sign in to manage your issues</h3>
   };
 
   const sortComponent = () => {
-    return (
-      <>
-      <Stack direction="row" sx={{mb: 2}}>
-        <Button color="neutral" onClick={() => setSortItemChronology('asc')}>Latest First</Button>
-        <Button color="neutral" onClick={() => setSortItemChronology('desc')}>Newest First</Button>
-      </Stack>
-      </>
-    )
+    if (isSignedIn || issues.length < 0) {
+      return (
+        <>
+        <Stack direction="row" sx={{mb: 2}}>
+          <SortIcon onClick={() => setSortItemChronology('asc')}>Oldest First</SortIcon>
+          <SortIcon sx={{transform: "rotate(180deg)"}} onClick={() => setSortItemChronology('desc')}>Newest First</SortIcon>
+        </Stack>
+        </>
+      )
+    }
   }
 
   const renderCreate = () => {
     if (isSignedIn) {
       return (
         <div>
-          <Button variant="contained" color="neutral" sx={{mb: 2}}>
-            <Link style={{color: "#333"}}
+          <Button variant="outlined" sx={{mb: 2}}>
+            <Link style={{color: "#c0c0c0"}}
               to="/issue/new"
             >
               <Typography>
@@ -121,9 +100,11 @@ const IssueList = () => {
   //! component Return
 
   return (
-    <div style={{ maxWidth: "900px" }}>
-      <div>{sortComponent()}</div>
-      <div>{renderCreate()}</div>
+    <div style={{ maxWidth: "900px"}}>
+      <div style={{display: "flex", alignItems: "center"}}>
+        <div>{renderCreate()}</div>
+        <div style={{marginLeft: "auto"}}>{sortComponent()}</div>
+      </div>
       <div>{renderList()}</div>
     </div>
   );

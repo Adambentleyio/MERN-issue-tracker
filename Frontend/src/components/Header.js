@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {Link } from 'react-router-dom';
 
 
+
 const Nav = styled.nav`
   background: #121111;
   display: flex;
@@ -14,7 +15,6 @@ const Nav = styled.nav`
 
 const NavLink = styled(Link)`
   color: #808080;
-  display: flex;
   align-items: center;
   text-decoration: none;
   padding: 0 1rem;
@@ -25,8 +25,10 @@ const NavLink = styled(Link)`
 `
 
 const NavMenu = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
 `
 
