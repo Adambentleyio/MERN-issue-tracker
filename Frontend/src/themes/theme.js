@@ -16,4 +16,27 @@ export const appTheme = createTheme( {
           main: '#ff6e63',
         },
       },
+      typography: {
+        fontFamily: [
+          'consolas',
+          'roboto',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(','),
+        body1: {
+          fontFamily: 'consolas',
+          fontWeight: 'light',
+        },
+        button: {
+          fontWeight: 'bold',
+        }
+      },
 });

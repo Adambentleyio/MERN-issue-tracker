@@ -37,10 +37,32 @@ const NavMenu = styled.div`
   }
 `
 
+const AlertBox = styled.div`
+background: #202020;
+border-radius: 20px;
+text-align: center;
+padding: 0.3rem;
+margin-bottom: 1rem;
+
+span {
+
+  font-size: 1.3em;
+  font-family: consolas;
+  font-weight: bold;
+  background-image: linear-gradient(45deg, #4400ee, #af42a1, #f3ee78 );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+`
+
 const Header = () => {
 
   return (
     <div>
+      <AlertBox>
+      <span>Annoucement: Version 2 Coming Soon.</span>
+      </AlertBox>
       <Nav>
         <NavMenu>
         <div>

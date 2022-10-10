@@ -22,12 +22,12 @@ const IssueList = () => {
   }, [dispatch, currentUserId]
   );
 
-  const [sortItemChronology, setSortItemChronology] = useState('desc');
+  const [sortItemChronology, setSortItemChronology] = useState(true);
 
   const sortedItems = issues.sort((a, b) => {
       // use localeCompare to compare two non number strings as dates
       // return sortItemChronology === "desc" ? b.createdAt.localeCompare(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
-      return sortItemChronology === "desc" ? new Date(b.createdAt) - new Date(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
+      return sortItemChronology === true ? new Date(b.createdAt) - new Date(a.createdAt) : a.createdAt.localeCompare(b.createdAt)
   }
   )
 
@@ -71,8 +71,8 @@ const IssueList = () => {
       return (
         <>
         <Stack direction="row" sx={{mb: 2}}>
-          <SortIcon onClick={() => setSortItemChronology('asc')}>Oldest First</SortIcon>
-          <SortIcon sx={{transform: "rotate(180deg)"}} onClick={() => setSortItemChronology('desc')}>Newest First</SortIcon>
+          <SortIcon sx={{cursor: 'pointer'}} onClick={() => setSortItemChronology(!sortItemChronology)}>Oldest First</SortIcon>
+          {/* <SortIcon sx={{transform: "rotate(180deg)"}} onClick={() => setSortItemChronology('desc')}>Newest First</SortIcon> */}
         </Stack>
         </>
       )
@@ -83,7 +83,7 @@ const renderCreate = () => {
     if (isSignedIn) {
       return (
           <div>
-            <Button variant="outlined" sx={{mb: 2}}>
+            <Button sx={{mb: 2, border: '1px solid white'}}>
               <Link style={{color: "#c0c0c0"}}
                 to="/issue/new"
               >
@@ -99,12 +99,9 @@ const renderCreate = () => {
   //! component Return
 
   return (
-    <div style={{ maxWidth: "900px"}}>
-      <div style={{display: "flex", alignItems: "center"}}>
+    <div>
         <div>{renderCreate()}</div>
-        {/* <RenderCreate /> */}
-        <div style={{marginLeft: "auto"}}>{sortComponent()}</div>
-      </div>
+        <div>{sortComponent()}</div>
       <RenderList />
     </div>
   );
